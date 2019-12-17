@@ -15,7 +15,7 @@ export default class Booker extends Component {
       id1:"44069509",
       id2:"10030559",
       id3:"100376478",
-      chosenId :"44069509",
+      chosenId :"",
       allRates :{
         finalRates :[],
         loaded :false
@@ -37,10 +37,15 @@ export default class Booker extends Component {
   }
 
   getRates = () =>{
-    let formatted_date = moment(this.state.date).format("DD/MM/YYYY")
-    this.bookingService.getRates(this.state.chosenId,formatted_date,this.state.nights)
-    .then(rates=>this.setState({...this.state, allRates : {finalRates : rates,loaded:true}}))
-    .catch(err=>this.setState({...this.state,error:"Lo sentimos, no hay tarifas disponibles"}))
+    if(this.state.chosenId===""){
+      this.setState({...this.state, error:"choose a hotel please"})
+    }else{
+      let formatted_date = moment(this.state.date).format("DD/MM/YYYY")
+      this.bookingService.getRates(this.state.chosenId,formatted_date,this.state.nights)
+      .then(rates=>this.setState({...this.state, allRates : {finalRates : rates,loaded:true}}))
+      .catch(err=>this.setState({...this.state,error:"Lo sentimos, no hay tarifas disponibles"}))
+  
+    }
 }
 
   
